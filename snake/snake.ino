@@ -37,93 +37,50 @@ struct player
 
 void changeIncrement(int x, int y) //find a better way to code this
 {
-    if(y > 320-2*BOXSIZE)
-    { 
-      if(y > 320 - BOXSIZE && y < 320)
+  if(incrementX == 0)
+  {
+    if(y > 320 - BOXSIZE)
+    {
+      if(x > 2*(nScreenWidth/3) && x < nScreenWidth) // x > 160 && x < 240, nScreenWidth = 240
+      // to the right
       {
-        if(x > 0)
-        {
-          if(x > 80)
-          {
-            if(x > 160 && x < 240) // >
-            {
-              switch(incrementX)
-              {
-            
-                case -5:
-                  return;
-                break;
-
-                default: 
-                  incrementY = 0;
-                  incrementX = 5;
-                  Serial.print("# incrementX: "); Serial.print(incrementX);
-                  Serial.print("  incrementY: "); Serial.print(incrementY);
-                  Serial.println("  | RIGHT #");
-                  return;
-                break;                                                 
-              }
-            }
-            else
-            { // \/
-              switch(incrementY)
-              {
-            
-                case -5:
-                  return;
-                break;
-
-                default: 
-                  incrementY = 5;
-                  incrementX = 0;
-                  Serial.print("# incrementX: "); Serial.print(incrementX);
-                  Serial.print("  incrementY: "); Serial.print(incrementY);
-                  Serial.println("  | DOWN  #");
-                  return;
-                break;
-
-              }
-            }
-          }
-          else{ // <
-            switch(incrementX)
-            {
-          
-              case 5:
-                return;
-              break;
-
-              default: 
-                incrementY = 0;
-                incrementX = -5;
-                Serial.print("# incrementX: "); Serial.print(incrementX);
-                Serial.print("  incrementY: "); Serial.print(incrementY);
-                Serial.println("  | LEFT  #");
-                return;
-              break;
-            }
-          }
-        }
+        incrementX = 5;
+        incrementY = 0;
+        Serial.println("RIGHT");
+        return;
       }
-      else if(x > 80 && x < 160) // ^
+      else if(x > 0 && x < (nScreenWidth/3)) // x > 0 && x < 80
+      //to the left
       {
-        switch(incrementY)
-        { 
-          case 5:
-            return;
-          break;
-
-          default: 
-            incrementY = -5;
-            incrementX = 0;
-            Serial.print("# incrementX: "); Serial.print(incrementX);
-            Serial.print("  incrementY: "); Serial.print(incrementY);
-            Serial.println("  | UP #");
-            return;
-          break;
-        }
+        incrementX = -5;
+        incrementY = 0;
+        Serial.println("LEFT");
+        return;
       }
     }
+  }
+  if(incrementY == 0)
+  {
+    if(x > nScreenWidth/3 && x < 2*(nScreenWidth/3)) // x > 80 && x < 160
+    {
+      if(y > 320-BOXSIZE)
+      //down
+      {
+        incrementX = 0;
+        incrementY = 5;
+        Serial.println("DOWN");
+        return;
+      }
+      else if(y > 320-2*BOXSIZE)
+      //up
+      {
+        incrementX = 0;
+        incrementY = -5;
+        Serial.println("UP");
+        return;
+      }
+    }
+  }
 }
 Player *pl = (Player*) malloc((playerSize+1)*sizeof(Player));
 void setup() {
@@ -210,20 +167,16 @@ void errorFunction(int ErrorCode)
 
 //TS_Point p;
 void loop() {
+  int z;
   //increase = 1;
   while(game == 1){
   uint16_t p_x = 0, p_y = 0; // To store the touch coordinates
   delay(80); // this speeds up the simulation
   // touch = ctp.touched();
   //t_x = 0, t_y = 0; // To store the touch coordinates
-  bool pressed = tft.getTouch(&p_x, &p_y, 100);
-  //increase = 1;
+  bool pressed = tft.getTouch(&p_x, &p_y);
   if(pressed)
   { //touch
-    /*p = ctp.getPoint();
-
-    p.x = map(p.x, 0, 240, 240, 0);
-    p.y = map(p.y, 0, 320, 320, 0);*/
     if(p_y < BOXSIZE)
     {
       if(p_x < BOXSIZE)
