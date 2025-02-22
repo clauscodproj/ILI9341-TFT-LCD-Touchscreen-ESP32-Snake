@@ -47,6 +47,8 @@ void changeIncrement(int x, int y) //find a better way to code this
         incrementX = 5;
         incrementY = 0;
         Serial.println("RIGHT");
+        Serial.print("X:  "); Serial.print(x);
+        Serial.print("  Y:  "); Serial.println(y);
         return;
       }
       else if(x > 0 && x < (nScreenWidth/3)) // x > 0 && x < 80
@@ -55,6 +57,8 @@ void changeIncrement(int x, int y) //find a better way to code this
         incrementX = -5;
         incrementY = 0;
         Serial.println("LEFT");
+        Serial.print("X:  "); Serial.print(x);
+        Serial.print("  Y:  "); Serial.println(y);
         return;
       }
     }
@@ -69,6 +73,8 @@ void changeIncrement(int x, int y) //find a better way to code this
         incrementX = 0;
         incrementY = 5;
         Serial.println("DOWN");
+        Serial.print("X:  "); Serial.print(x);
+        Serial.print("  Y:  "); Serial.println(y);
         return;
       }
       else if(y > 320-2*BOXSIZE)
@@ -77,6 +83,8 @@ void changeIncrement(int x, int y) //find a better way to code this
         incrementX = 0;
         incrementY = -5;
         Serial.println("UP");
+        Serial.print("X:  "); Serial.print(x);
+        Serial.print("  Y:  "); Serial.println(y);
         return;
       }
     }
@@ -131,22 +139,36 @@ void randScore()
   }
 }
 void drawControls(){
+  /*   tft.setRotation(0); 
+    tft.fillScreen(0x8430); 
+    tft.setCursor(1,10); 
+    tft.setTextColor(0xb000);
+    tft.setTextSize(3);
+    Serial.print("ERROR: ");
+    Serial.println(ErrorCode);
+    tft.print("ERROR: ");
+  */
   // <-
   tft.fillRect(0, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x9cf3);
   tft.drawRect(0, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x52aa);
+  tft.fillTriangle(5, 320-(BOXSIZE/2), 40, (320-BOXSIZE)+ 5, 40, 320 - 5, 0xa000);
+
 
   // \/
   tft.fillRect(80, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x9cf3);
   tft.drawRect(80, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x52aa);
+  tft.fillTriangle(80+20, 320-(BOXSIZE/2), 160-20, 320-(BOXSIZE/2), 120, 320 - 5, 0xa000);
 
   // ->
   tft.fillRect(160, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x9cf3);
   tft.drawRect(160, 320-BOXSIZE, nScreenWidth/3, BOXSIZE, 0x52aa);
+  tft.fillTriangle(240 - 5, 320-(BOXSIZE/2), 200, (320-BOXSIZE)+ 5, 200, 320 - 5, 0xa000);
 
   // /\
   //tft.fillRect(75+1*BOXSIZE, 320-2*BOXSIZE, BOXSIZE, BOXSIZE, 0x9cf3);
   tft.fillRect(80, 320-2*BOXSIZE, nScreenWidth/3, BOXSIZE, 0x9cf3);
   tft.drawRect(80, 320-2*BOXSIZE, nScreenWidth/3, BOXSIZE, 0x52aa);
+  tft.fillTriangle(80+20, 260 + (BOXSIZE/2), 160-20, 260+(BOXSIZE/2), 120, (320 - (2*BOXSIZE))+5, 0xa000);
 
   tft.fillRect(0, nScreenHeight, nScreenWidth, 4, ILI9341_WHITE);
 }
